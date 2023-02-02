@@ -4,7 +4,7 @@ import { createInterFont } from '@tamagui/font-inter';
 import { createMedia } from '@tamagui/react-native-media-driver';
 import { shorthands } from '@tamagui/shorthands';
 import { themes, tokens } from '@tamagui/theme-base';
-import { createTamagui } from 'tamagui';
+import { createTamagui, createTokens } from 'tamagui';
 
 const headingFont = createInterFont({
   size: {
@@ -81,7 +81,13 @@ const config = createTamagui({
     body: bodyFont,
   },
   themes,
-  tokens,
+  tokens: createTokens({
+    ...tokens,
+    color: {
+      textOnPrimary: 'white',
+      primary: '#2F6AD5',
+    },
+  }),
   media: createMedia({
     xs: { maxWidth: 660 },
     sm: { maxWidth: 800 },
