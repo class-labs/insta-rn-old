@@ -15,7 +15,12 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 export function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { data, loading, error } = useQuery<GetPosts>(GET_POSTS);
+  const { data, loading, error } = useQuery<GetPosts>(GET_POSTS, {
+    onError: (error) => {
+      console.log('Error fetching data');
+      console.error(error);
+    },
+  });
   const insets = useSafeAreaInsets();
 
   navigation.setOptions({
