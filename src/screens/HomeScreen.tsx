@@ -21,8 +21,10 @@ export function HomeScreen() {
   return (
     <FlatList
       data={data.posts}
-      contentContainerStyle={{
+      style={{
         backgroundColor: 'white',
+      }}
+      contentContainerStyle={{
         paddingTop: 12,
         paddingBottom: insets.bottom,
       }}
