@@ -1,6 +1,6 @@
 /* eslint-disable react/style-prop-object */
-import { useEffect, useState } from 'react';
-import { Pressable } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Alert, Pressable } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
 import { RefreshCcw as IconRefresh } from '@tamagui/lucide-icons';
@@ -16,6 +16,8 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 export function PhotoCaptureScreen() {
   const insets = useSafeAreaInsets();
   const [type, setType] = useState(CameraType.back);
+  const [isReady, setReady] = useState(false);
+  const cameraRef = useRef<Camera>(null);
   const navigation = useNavigation<NavigationProp>();
   useEffect(() => {
     navigation.setOptions({
@@ -56,9 +58,39 @@ export function PhotoCaptureScreen() {
         space={12}
         paddingBottom={insets.bottom}
       >
-        <Camera type={type} style={{ width: '100%', aspectRatio: 1 }} />
+        <Camera
+          ref={cameraRef}
+          type={type}
+          style={{ width: '100%', aspectRatio: 1 }}
+          onMountError={(error) => {
+            const message: unknown = Object(error).message;
+            Alert.alert(
+              'Error',
+              typeof message === 'string'
+                ? message
+                : 'Unable to initialize camera',
+              [
+                {
+                  text: 'OK',
+                  onPress: () => navigation.navigate('PostCreate', {}),
+                },
+              ],
+            );
+          }}
+          onCameraReady={() => {
+            setReady(true);
+          }}
+        />
         <XStack justifyContent="center">
-          <Button>Take Photo</Button>
+          <Button
+            disabled={!isReady}
+            onPress={async () => {
+              const result = await cameraRef.current?.takePictureAsync();
+              console.log(result);
+            }}
+          >
+            Take Photo
+          </Button>
         </XStack>
         <XStack justifyContent="center">
           <Button
