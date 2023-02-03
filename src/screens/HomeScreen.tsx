@@ -10,6 +10,7 @@ import { GET_POSTS } from '../graphql/queries';
 import { FeedPostItem } from '../components/FeedPostItem';
 import { RootStackParamList } from '../types/Navigation';
 import { Plus as IconPlus } from '@tamagui/lucide-icons';
+import { useEffect } from 'react';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -23,20 +24,22 @@ export function HomeScreen() {
   });
   const insets = useSafeAreaInsets();
 
-  navigation.setOptions({
-    headerRight: () => {
-      return (
-        <Pressable
-          style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
-          onPress={() => {
-            navigation.navigate('PhotoCapture');
-          }}
-        >
-          <IconPlus />
-        </Pressable>
-      );
-    },
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Pressable
+            style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
+            onPress={() => {
+              navigation.navigate('PhotoCapture');
+            }}
+          >
+            <IconPlus />
+          </Pressable>
+        );
+      },
+    });
+  }, [navigation]);
 
   if (error) {
     return <Text>{String(error)}</Text>;

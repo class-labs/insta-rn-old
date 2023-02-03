@@ -1,5 +1,5 @@
 /* eslint-disable react/style-prop-object */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
@@ -15,22 +15,24 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 export function PhotoCaptureScreen() {
   const [type, setType] = useState(CameraType.back);
   const navigation = useNavigation<NavigationProp>();
-  navigation.setOptions({
-    headerRight: () => {
-      return (
-        <Pressable
-          style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
-          onPress={() => {
-            setType(
-              type === CameraType.back ? CameraType.front : CameraType.back,
-            );
-          }}
-        >
-          <IconRefresh color="white" />
-        </Pressable>
-      );
-    },
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Pressable
+            style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
+            onPress={() => {
+              setType((type) =>
+                type === CameraType.back ? CameraType.front : CameraType.back,
+              );
+            }}
+          >
+            <IconRefresh color="white" />
+          </Pressable>
+        );
+      },
+    });
+  }, [navigation]);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   if (!permission) {
     return null;
