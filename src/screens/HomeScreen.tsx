@@ -1,29 +1,16 @@
 import { Text, YStack } from 'tamagui';
-import { gql, useQuery } from '@apollo/client';
-
-const GET_POSTS = gql`
-  query GetPosts {
-    posts {
-      id
-      photo
-      caption
-      author {
-        id
-        name
-        username
-      }
-    }
-  }
-`;
+import { useQuery } from '@apollo/client';
+import { GetPosts } from '../types/__generated__/GetPosts';
+import { GET_POSTS } from '../graphql/queries';
 
 export function HomeScreen() {
-  const { data, loading, error } = useQuery(GET_POSTS);
+  const { data, loading, error } = useQuery<GetPosts>(GET_POSTS);
 
   if (error) {
     return <Text>{String(error)}</Text>;
   }
 
-  if (loading) {
+  if (loading || !data) {
     return <Text>Loading...</Text>;
   }
 
