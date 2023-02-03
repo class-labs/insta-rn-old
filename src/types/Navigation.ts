@@ -1,6 +1,6 @@
 export type RootStackParamList = {
   Home: undefined;
   PhotoCapture: undefined;
-  PostCreate: undefined;
+  PostCreate: { openPicker?: boolean; capturedPhoto?: unknown };
   Login: undefined;
 };
