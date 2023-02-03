@@ -1,6 +1,4 @@
 import { useMutation } from '@apollo/client';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   Heart as IconHeart,
   MessageSquare as IconMessageSquare,
@@ -9,22 +7,19 @@ import { Alert, Pressable } from 'react-native';
 import { Avatar, Image, Text, XStack, YStack } from 'tamagui';
 import { GET_POSTS, LIKE_POST } from '../graphql/queries';
 import { useAuth } from '../support/Auth';
-import { RootStackParamList } from '../types/Navigation';
 
 import { GetPosts_posts as Post } from '../types/__generated__/GetPosts';
 import { LikePost, LikePostVariables } from '../types/__generated__/LikePost';
 
 type Props = {
   post: Post;
+  onLoginRequired: () => void;
 };
-
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 export function FeedPostItem(props: Props) {
   const { post } = props;
   const { author } = post;
   const { getAuthToken } = useAuth();
-  const navigation = useNavigation<NavigationProp>();
   const [likePost] = useMutation<LikePost, LikePostVariables>(LIKE_POST, {
     variables: { postId: post.id },
     refetchQueries: [GET_POSTS],
@@ -70,7 +65,7 @@ export function FeedPostItem(props: Props) {
                   },
                   {
                     text: 'Login',
-                    onPress: () => navigation.navigate('Login'),
+                    onPress: () => props.onLoginRequired(),
                   },
                 ],
               );
