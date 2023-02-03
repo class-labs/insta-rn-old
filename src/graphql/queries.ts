@@ -10,6 +10,7 @@ export const GET_POSTS = gql`
         id
         name
         username
+        profilePhoto
       }
       createdAt
     }
