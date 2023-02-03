@@ -9,10 +9,12 @@ import { Button, Text, XStack, YStack } from 'tamagui';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../types/Navigation';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 export function PhotoCaptureScreen() {
+  const insets = useSafeAreaInsets();
   const [type, setType] = useState(CameraType.back);
   const navigation = useNavigation<NavigationProp>();
   useEffect(() => {
@@ -48,16 +50,23 @@ export function PhotoCaptureScreen() {
   return (
     <>
       <StatusBar style="light" />
-      <YStack flex={1} backgroundColor="white">
+      <YStack
+        flex={1}
+        backgroundColor="white"
+        space={12}
+        paddingBottom={insets.bottom}
+      >
         <Camera type={type} style={{ width: '100%', aspectRatio: 1 }} />
-        <XStack>{/* TODO: Add camera buttons */}</XStack>
-        <XStack>
+        <XStack justifyContent="center">
+          <Button>Take Photo</Button>
+        </XStack>
+        <XStack justifyContent="center">
           <Button
             onPress={() => {
               navigation.navigate('PostCreate', { openPicker: true });
             }}
           >
-            Choose Photo
+            Choose from Photos
           </Button>
         </XStack>
       </YStack>
