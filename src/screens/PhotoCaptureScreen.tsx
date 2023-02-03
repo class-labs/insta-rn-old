@@ -86,7 +86,9 @@ export function PhotoCaptureScreen() {
             disabled={!isReady}
             onPress={async () => {
               const result = await cameraRef.current?.takePictureAsync();
-              console.log(result);
+              if (result) {
+                navigation.navigate('PostCreate', { capturedPhoto: result });
+              }
             }}
           >
             Take Photo
