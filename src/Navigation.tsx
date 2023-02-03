@@ -18,11 +18,12 @@ export function Navigation() {
         <Stack.Screen
           name="PhotoCapture"
           component={PhotoCaptureScreen}
-          options={
-            {
-              // TODO: Configure header to match design
-            }
-          }
+          options={{
+            title: 'Take Photo',
+            headerStyle: { backgroundColor: 'black' },
+            headerTintColor: 'white',
+            headerBackTitleVisible: false,
+          }}
         />
         <Stack.Screen name="PostCreate" component={PostCreateScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
