@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { Button, Input, Spacer, YStack } from 'tamagui';
+import { useAuth } from '../support/Auth';
 
 export function LoginScreen() {
+  const { setAuthToken } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const onSubmit = () => {
+    // TODO: Send a GraphQL mutation, then call setAuthToken, then navigate to home
     console.log({ username, password });
   };
   return (

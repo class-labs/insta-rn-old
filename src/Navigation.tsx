@@ -4,8 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { HomeScreen } from './screens/HomeScreen';
 import { LoginScreen } from './screens/LoginScreen';
+import { RootStackParamList } from './types/Navigation';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function Navigation() {
   return (

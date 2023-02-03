@@ -1,11 +1,15 @@
 import { useMutation } from '@apollo/client';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   Heart as IconHeart,
   MessageSquare as IconMessageSquare,
 } from '@tamagui/lucide-icons';
-import { Pressable } from 'react-native';
+import { Alert, Pressable } from 'react-native';
 import { Avatar, Image, Text, XStack, YStack } from 'tamagui';
 import { GET_POSTS, LIKE_POST } from '../graphql/queries';
+import { useAuth } from '../support/Auth';
+import { RootStackParamList } from '../types/Navigation';
 
 import { GetPosts_posts as Post } from '../types/__generated__/GetPosts';
 import { LikePost, LikePostVariables } from '../types/__generated__/LikePost';
@@ -14,9 +18,13 @@ type Props = {
   post: Post;
 };
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+
 export function FeedPostItem(props: Props) {
   const { post } = props;
   const { author } = post;
+  const { getAuthToken } = useAuth();
+  const navigation = useNavigation<NavigationProp>();
   const [likePost] = useMutation<LikePost, LikePostVariables>(LIKE_POST, {
     variables: { postId: post.id },
     refetchQueries: [GET_POSTS],
@@ -49,7 +57,27 @@ export function FeedPostItem(props: Props) {
       <XStack px={16} space={12}>
         <Pressable
           style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
-          onPress={() => likePost()}
+          onPress={() => {
+            const authToken = getAuthToken();
+            if (authToken === null) {
+              Alert.alert(
+                'Login Required',
+                'You must be logged in to like a post.',
+                [
+                  {
+                    text: 'Cancel',
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Login',
+                    onPress: () => navigation.navigate('Login'),
+                  },
+                ],
+              );
+            } else {
+              likePost();
+            }
+          }}
         >
           <IconHeart color={post.isLikedByViewer ? '#f7444e' : 'black'} />
         </Pressable>
