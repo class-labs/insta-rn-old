@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "codegen": "apollo codegen:generate --target=typescript --tagName=gql --globalTypesFile src/__generated__/globalTypes.ts",
+    "codegen": "apollo codegen:generate --target=typescript --tagName=gql --no-addTypename --outputFlat src/types/__generated__",
     "clean": "rm -rf __generated__ && find ./src -type d -name __generated__ -exec rm -rf \"{}\" +",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 .",
