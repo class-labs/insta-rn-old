@@ -1,10 +1,14 @@
+import { useMutation } from '@apollo/client';
 import {
   Heart as IconHeart,
   MessageSquare as IconMessageSquare,
 } from '@tamagui/lucide-icons';
 import { Pressable } from 'react-native';
 import { Avatar, Image, Text, XStack, YStack } from 'tamagui';
+import { GET_POSTS, LIKE_POST } from '../graphql/queries';
+
 import { GetPosts_posts as Post } from '../types/__generated__/GetPosts';
+import { LikePost, LikePostVariables } from '../types/__generated__/LikePost';
 
 type Props = {
   post: Post;
@@ -13,6 +17,10 @@ type Props = {
 export function FeedPostItem(props: Props) {
   const { post } = props;
   const { author } = post;
+  const [likePost] = useMutation<LikePost, LikePostVariables>(LIKE_POST, {
+    variables: { postId: post.id },
+    refetchQueries: [GET_POSTS],
+  });
   return (
     <YStack space={12}>
       <XStack px={16} alignItems="center" space={8}>
@@ -41,11 +49,9 @@ export function FeedPostItem(props: Props) {
       <XStack px={16} space={12}>
         <Pressable
           style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
-          onPress={() => {
-            // TODO
-          }}
+          onPress={() => likePost()}
         >
-          <IconHeart />
+          <IconHeart color={post.isLikedByViewer ? '#f7444e' : 'black'} />
         </Pressable>
         <Pressable
           style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
