@@ -21,8 +21,7 @@ export function ApolloProvider(props: Props) {
     });
 
     const authLink = setContext((_, { headers }) => {
-      // TODO: Remove this hard-coded token
-      const token = getAuthToken() ?? 'q0486hx91';
+      const token = getAuthToken();
       return {
         headers: {
           ...headers,
