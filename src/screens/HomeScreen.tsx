@@ -1,7 +1,9 @@
-import { Text, YStack } from 'tamagui';
+import { FlatList } from 'react-native';
+import { Text } from 'tamagui';
 import { useQuery } from '@apollo/client';
 import { GetPosts } from '../types/__generated__/GetPosts';
 import { GET_POSTS } from '../graphql/queries';
+import { FeedPostItem } from '../components/FeedPostItem';
 
 export function HomeScreen() {
   const { data, loading, error } = useQuery<GetPosts>(GET_POSTS);
@@ -15,10 +17,12 @@ export function HomeScreen() {
   }
 
   return (
-    <YStack flex={1} justifyContent="flex-start" alignItems="stretch">
-      {data.posts.map((post) => (
-        <Text>{post.id}</Text>
-      ))}
-    </YStack>
+    <FlatList
+      data={data.posts}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => {
+        return <FeedPostItem post={item} />;
+      }}
+    />
   );
 }
