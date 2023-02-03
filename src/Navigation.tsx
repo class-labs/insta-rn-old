@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { HomeScreen } from './screens/HomeScreen';
 import { LoginScreen } from './screens/LoginScreen';
+import { PhotoCaptureScreen } from './screens/PhotoCaptureScreen';
+import { PostCreateScreen } from './screens/PostCreateScreen';
 import { RootStackParamList } from './types/Navigation';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -13,6 +15,16 @@ export function Navigation() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="PhotoCapture"
+          component={PhotoCaptureScreen}
+          options={
+            {
+              // TODO: Configure header to match design
+            }
+          }
+        />
+        <Stack.Screen name="PostCreate" component={PostCreateScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
