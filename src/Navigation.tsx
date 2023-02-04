@@ -25,7 +25,14 @@ export function Navigation() {
             headerBackTitleVisible: false,
           }}
         />
-        <Stack.Screen name="PostCreate" component={PostCreateScreen} />
+        <Stack.Screen
+          name="PostCreate"
+          component={PostCreateScreen}
+          options={{
+            title: 'New Post',
+            headerBackTitleVisible: false,
+          }}
+        />
         <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
