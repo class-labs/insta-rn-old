@@ -72,7 +72,7 @@ export function PhotoCaptureScreen() {
               [
                 {
                   text: 'OK',
-                  onPress: () => navigation.navigate('PostCreate', {}),
+                  onPress: () => navigation.replace('PostCreate', {}),
                 },
               ],
             );
@@ -87,7 +87,7 @@ export function PhotoCaptureScreen() {
             onPress={async () => {
               const result = await cameraRef.current?.takePictureAsync();
               if (result) {
-                navigation.navigate('PostCreate', { capturedPhoto: result });
+                navigation.replace('PostCreate', { capturedPhoto: result });
               }
             }}
           >
@@ -97,7 +97,7 @@ export function PhotoCaptureScreen() {
         <XStack justifyContent="center">
           <Button
             onPress={() => {
-              navigation.navigate('PostCreate', { openPicker: true });
+              navigation.replace('PostCreate', { openPicker: true });
             }}
           >
             Choose from Photos
