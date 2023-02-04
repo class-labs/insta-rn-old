@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Pressable } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Pressable } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Button, Image, Spinner, Text, TextArea, YStack } from 'tamagui';
@@ -103,62 +103,76 @@ export function PostCreateScreen() {
   }, []);
 
   return (
-    <YStack flex={1} backgroundColor="white" space={12}>
-      <Pressable
-        style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
-        onPress={() => openImagePicker()}
+    <YStack flex={1}>
+      <KeyboardAvoidingView
+        style={{ height: '100%' }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        behavior="position"
       >
-        <YStack
-          width="100%"
-          aspectRatio={1}
-          backgroundColor="#dcdcdc"
-          justifyContent="center"
-          alignItems="center"
-          position="relative"
-        >
-          {selectedImage ? (
-            <Image
-              src={selectedImage}
-              width="100%"
-              height="auto"
-              aspectRatio={1}
-            />
-          ) : (
-            <Text>Press to choose an image</Text>
-          )}
-          {uploadedImage?.state === 'uploading' ? (
+        <YStack flex={1} backgroundColor="white" space={12}>
+          <Pressable
+            style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
+            onPress={() => {
+              Keyboard.dismiss();
+              openImagePicker();
+            }}
+          >
             <YStack
-              position="absolute"
-              right={10}
-              bottom={10}
-              zIndex={2}
-              backgroundColor="rgba(0, 0, 0, .7)"
-              padding={12}
-              borderRadius={5}
+              width="100%"
+              aspectRatio={1}
+              backgroundColor="#dcdcdc"
+              justifyContent="center"
+              alignItems="center"
+              position="relative"
             >
-              <Spinner size="large" color="white" />
+              {selectedImage ? (
+                <Image
+                  src={selectedImage}
+                  width="100%"
+                  height="auto"
+                  aspectRatio={1}
+                />
+              ) : (
+                <Text>Press to choose an image</Text>
+              )}
+              {uploadedImage?.state === 'uploading' ? (
+                <YStack
+                  position="absolute"
+                  right={10}
+                  bottom={10}
+                  zIndex={2}
+                  backgroundColor="rgba(0, 0, 0, .7)"
+                  padding={12}
+                  borderRadius={5}
+                >
+                  <Spinner size="large" color="white" />
+                </YStack>
+              ) : null}
             </YStack>
-          ) : null}
+          </Pressable>
+          <YStack px={16} space={12}>
+            <TextArea
+              value={caption}
+              onChangeText={(value) => setCaption(value)}
+            />
+            <Button
+              disabled={uploadedImage?.state !== 'complete'}
+              onPress={() => {
+                if (uploadedImage?.state === 'complete') {
+                  createPost({
+                    variables: {
+                      photo: uploadedImage.uri,
+                      caption,
+                    },
+                  });
+                }
+              }}
+            >
+              Submit
+            </Button>
+          </YStack>
         </YStack>
-      </Pressable>
-      <YStack px={16} space={12}>
-        <TextArea value={caption} onChangeText={(value) => setCaption(value)} />
-        <Button
-          disabled={uploadedImage?.state !== 'complete'}
-          onPress={() => {
-            if (uploadedImage?.state === 'complete') {
-              createPost({
-                variables: {
-                  photo: uploadedImage.uri,
-                  caption,
-                },
-              });
-            }
-          }}
-        >
-          Submit
-        </Button>
-      </YStack>
+      </KeyboardAvoidingView>
     </YStack>
   );
 }
