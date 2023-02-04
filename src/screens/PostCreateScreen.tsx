@@ -59,6 +59,7 @@ export function PostCreateScreen() {
     },
     refetchQueries: [GET_POSTS],
   });
+  const isKeyboardShown = useKeyboardVisibility();
   const [selectedImage, setSelectedImage] = useState<string | null>(() => {
     return route.params.capturedPhoto?.uri ?? null;
   });
@@ -113,8 +114,11 @@ export function PostCreateScreen() {
           <Pressable
             style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
             onPress={() => {
-              Keyboard.dismiss();
-              openImagePicker();
+              if (isKeyboardShown) {
+                Keyboard.dismiss();
+              } else {
+                openImagePicker();
+              }
             }}
           >
             <YStack
@@ -175,4 +179,21 @@ export function PostCreateScreen() {
       </KeyboardAvoidingView>
     </YStack>
   );
+}
+
+function useKeyboardVisibility() {
+  const [isVisible, setVisible] = useState(false);
+  useEffect(() => {
+    const keyboardDidShow = Keyboard.addListener('keyboardDidShow', () => {
+      setVisible(true);
+    });
+    const keyboardDidHide = Keyboard.addListener('keyboardDidHide', () => {
+      setVisible(false);
+    });
+    return () => {
+      keyboardDidShow.remove();
+      keyboardDidHide.remove();
+    };
+  }, []);
+  return isVisible;
 }
