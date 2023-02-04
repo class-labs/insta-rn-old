@@ -2,12 +2,21 @@ import { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { Button, Image, Text, YStack } from 'tamagui';
+import { Button, Image, Spinner, Text, YStack } from 'tamagui';
 import { RootStackParamList } from '../types/Navigation';
 
 type ResolvedRouteProp = RouteProp<RootStackParamList, 'PostCreate'>;
 
 const API_BASE = process.env.GRAPHQL_API;
+
+type ImageUpload =
+  | {
+      state: 'uploading';
+    }
+  | {
+      state: 'complete';
+      uri: string;
+    };
 
 type UploadResponse = {
   url: string;
@@ -36,14 +45,18 @@ async function uploadImage(
 
 export function PostCreateScreen() {
   const route = useRoute<ResolvedRouteProp>();
-  const [imageUri, setImageUri] = useState<string | null>(() => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(() => {
     return route.params.capturedPhoto?.uri ?? null;
   });
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<ImageUpload | null>(null);
 
   const startUpload = async (uri: string) => {
+    setUploadedImage({ state: 'uploading' });
     const result = await uploadImage(uri);
-    setUploadedImage(result.url);
+    setUploadedImage({
+      state: 'complete',
+      uri: result.url,
+    });
   };
 
   const openImagePicker = async () => {
@@ -57,7 +70,7 @@ export function PostCreateScreen() {
     if (!result.canceled) {
       const asset = result.assets[0];
       if (asset) {
-        setImageUri(asset.uri);
+        setSelectedImage(asset.uri);
         startUpload(asset.uri);
       }
     }
@@ -86,18 +99,38 @@ export function PostCreateScreen() {
           backgroundColor="#dcdcdc"
           justifyContent="center"
           alignItems="center"
+          position="relative"
         >
-          {imageUri ? (
-            <Image src={imageUri} width="100%" height="auto" aspectRatio={1} />
+          {selectedImage ? (
+            <Image
+              src={selectedImage}
+              width="100%"
+              height="auto"
+              aspectRatio={1}
+            />
           ) : (
             <Text>Press to choose an image</Text>
           )}
+          {uploadedImage?.state === 'uploading' ? (
+            <YStack
+              position="absolute"
+              right={10}
+              bottom={10}
+              zIndex={2}
+              backgroundColor="rgba(0, 0, 0, .7)"
+              padding={12}
+              borderRadius={5}
+            >
+              <Spinner size="large" color="white" />
+            </YStack>
+          ) : null}
         </YStack>
       </Pressable>
       <YStack px={16} space={12}>
-        <Text>Chosen image: {String(imageUri)}</Text>
-        <Text>Uploaded image: {String(uploadedImage)}</Text>
+        <Text>Chosen image: {String(selectedImage)}</Text>
+        <Text>Uploaded image: {JSON.stringify(uploadedImage)}</Text>
         <Button
+          disabled={uploadedImage?.state !== 'complete'}
           onPress={() => {
             // TODO: GraphQL Mutation
           }}
