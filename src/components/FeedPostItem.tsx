@@ -11,6 +11,12 @@ import { useAuth } from '../support/Auth';
 import { GetPosts_posts as Post } from '../types/__generated__/GetPosts';
 import { LikePost, LikePostVariables } from '../types/__generated__/LikePost';
 
+const SERVER_BASE_URL = process.env.GRAPHQL_API;
+
+function toFullyQualifiedUri(url: string) {
+  return url.startsWith('/') ? SERVER_BASE_URL + url : url;
+}
+
 type Props = {
   post: Post;
   onLoginRequired: () => void;
@@ -43,7 +49,7 @@ export function FeedPostItem(props: Props) {
         <Text>{author.name}</Text>
       </XStack>
       <Image
-        src={post.photo}
+        src={toFullyQualifiedUri(post.photo)}
         width="100%"
         height="auto"
         aspectRatio={1}

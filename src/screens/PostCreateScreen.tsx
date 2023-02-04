@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { Button, Image, Spinner, Text, YStack } from 'tamagui';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { Button, Image, Spinner, Text, TextArea, YStack } from 'tamagui';
 import { RootStackParamList } from '../types/Navigation';
+import { useMutation } from '@apollo/client';
+import { CREATE_POST, GET_POSTS } from '../graphql/queries';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type ResolvedRouteProp = RouteProp<RootStackParamList, 'PostCreate'>;
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'PostCreate'
+>;
 
-const API_BASE = process.env.GRAPHQL_API;
+const SERVER_BASE_URL = process.env.GRAPHQL_API;
 
 type ImageUpload =
   | {
@@ -32,7 +39,7 @@ async function uploadImage(
   mimeType = 'image/jpeg',
 ): Promise<UploadResponse> {
   const blob = await uriToBlob(imageUri);
-  const response = await fetch(API_BASE + '/images', {
+  const response = await fetch(SERVER_BASE_URL + '/images', {
     method: 'POST',
     headers: {
       'content-type': 'application/octet-stream',
@@ -45,10 +52,18 @@ async function uploadImage(
 
 export function PostCreateScreen() {
   const route = useRoute<ResolvedRouteProp>();
+  const navigation = useNavigation<NavigationProp>();
+  const [createPost] = useMutation(CREATE_POST, {
+    onCompleted: () => {
+      navigation.replace('Home');
+    },
+    refetchQueries: [GET_POSTS],
+  });
   const [selectedImage, setSelectedImage] = useState<string | null>(() => {
     return route.params.capturedPhoto?.uri ?? null;
   });
   const [uploadedImage, setUploadedImage] = useState<ImageUpload | null>(null);
+  const [caption, setCaption] = useState('');
 
   const startUpload = async (uri: string) => {
     setUploadedImage({ state: 'uploading' });
@@ -63,7 +78,7 @@ export function PostCreateScreen() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
     setUploadedImage(null);
@@ -127,12 +142,18 @@ export function PostCreateScreen() {
         </YStack>
       </Pressable>
       <YStack px={16} space={12}>
-        <Text>Chosen image: {String(selectedImage)}</Text>
-        <Text>Uploaded image: {JSON.stringify(uploadedImage)}</Text>
+        <TextArea value={caption} onChangeText={(value) => setCaption(value)} />
         <Button
           disabled={uploadedImage?.state !== 'complete'}
           onPress={() => {
-            // TODO: GraphQL Mutation
+            if (uploadedImage?.state === 'complete') {
+              createPost({
+                variables: {
+                  photo: uploadedImage.uri,
+                  caption,
+                },
+              });
+            }
           }}
         >
           Submit
