@@ -8,6 +8,7 @@ import { Avatar, Image, Text, XStack, YStack } from 'tamagui';
 import { GET_POSTS, LIKE_POST } from '../graphql/queries';
 import { toFullyQualifiedUri } from '../support/toFullyQualifiedUri';
 import { useAuth } from '../support/Auth';
+import { getInitials } from '../support/getInitials';
 
 import { GetPosts_posts as Post } from '../__generated__/GetPosts';
 import { LikePost, LikePostVariables } from '../__generated__/LikePost';
@@ -31,14 +32,7 @@ export function FeedPostItem(props: Props) {
         <Avatar circular size="$4">
           <Avatar.Image src={author.profilePhoto} />
           <Avatar.Fallback backgroundColor="red">
-            <Text>
-              {author.name
-                .split(/\s+/)
-                .map((s) => s.charAt(0))
-                .join('')
-                .toUpperCase()
-                .slice(0, 2)}
-            </Text>
+            <Text>{getInitials(author.name)}</Text>
           </Avatar.Fallback>
         </Avatar>
         <Text>{author.name}</Text>
