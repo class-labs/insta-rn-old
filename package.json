@@ -7,8 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "codegen": "apollo codegen:generate --target=typescript --tagName=gql --no-addTypename --outputFlat src/types/__generated__",
-    "clean": "rm -rf __generated__ && find ./src -type d -name __generated__ -exec rm -rf \"{}\" +",
+    "codegen": "npm run clean && apollo codegen:generate --target=typescript --tagName=gql --suppressDeprecationWarning --no-addTypename --outputFlat src/__generated__",
+    "clean": "rm -rf src/__generated__",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 .",
     "test": "npm run typecheck && npm run lint"

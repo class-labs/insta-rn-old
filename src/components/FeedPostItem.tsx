@@ -9,8 +9,8 @@ import { GET_POSTS, LIKE_POST } from '../graphql/queries';
 import { toFullyQualifiedUri } from '../support/toFullyQualifiedUri';
 import { useAuth } from '../support/Auth';
 
-import { GetPosts_posts as Post } from '../types/__generated__/GetPosts';
-import { LikePost, LikePostVariables } from '../types/__generated__/LikePost';
+import { GetPosts_posts as Post } from '../__generated__/GetPosts';
+import { LikePost, LikePostVariables } from '../__generated__/LikePost';
 
 type Props = {
   post: Post;

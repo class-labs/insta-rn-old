@@ -7,7 +7,7 @@ import { Button, Input, Spacer, YStack } from 'tamagui';
 import { LOGIN } from '../graphql/queries';
 import { useAuth } from '../support/Auth';
 import { RootStackParamList } from '../types/Navigation';
-import { Login, LoginVariables } from '../types/__generated__/Login';
+import { Login, LoginVariables } from '../__generated__/Login';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
