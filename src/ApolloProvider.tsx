@@ -17,7 +17,7 @@ export function ApolloProvider(props: Props) {
   const { getAuthToken } = useAuth();
   const [client] = useState(() => {
     const httpLink = createHttpLink({
-      uri: process.env.GRAPHQL_API + '/graphql',
+      uri: process.env.GRAPHQL_API,
     });
 
     const authLink = setContext((_, { headers }) => {
