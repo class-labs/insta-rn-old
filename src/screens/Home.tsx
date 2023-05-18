@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-export function HomeScreen() {
+export function Home() {
   const navigation = useNavigation<NavigationProp>();
   const { data, loading, error } = useQuery<GetPosts>(GET_POSTS, {
     onError: (error) => {

@@ -13,7 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-export function PhotoCaptureScreen() {
+export function PhotoCapture() {
   const insets = useSafeAreaInsets();
   const [type, setType] = useState(CameraType.back);
   const [isReady, setReady] = useState(false);

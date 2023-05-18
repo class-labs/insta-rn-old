@@ -50,7 +50,7 @@ async function uploadImage(
   return await response.json();
 }
 
-export function PostCreateScreen() {
+export function PostCreate() {
   const route = useRoute<ResolvedRouteProp>();
   const navigation = useNavigation<NavigationProp>();
   const [createPost] = useMutation(CREATE_POST, {
