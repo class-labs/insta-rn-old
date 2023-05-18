@@ -4,7 +4,7 @@ import {
   MessageSquare as IconMessageSquare,
 } from '@tamagui/lucide-icons';
 import { Alert, Pressable } from 'react-native';
-import { Avatar, Image, Text, XStack, YStack } from 'tamagui';
+import { Avatar, Image, Paragraph, XStack, YStack } from 'tamagui';
 import { GET_POSTS, LIKE_POST } from '../graphql/queries';
 import { toFullyQualifiedUri } from '../support/toFullyQualifiedUri';
 import { useAuth } from '../support/Auth';
@@ -32,10 +32,10 @@ export function FeedPostItem(props: Props) {
         <Avatar circular size="$4">
           <Avatar.Image src={author.profilePhoto} />
           <Avatar.Fallback backgroundColor="red">
-            <Text>{getInitials(author.name)}</Text>
+            <Paragraph>{getInitials(author.name)}</Paragraph>
           </Avatar.Fallback>
         </Avatar>
-        <Text>{author.name}</Text>
+        <Paragraph>{author.name}</Paragraph>
       </XStack>
       <Image
         src={toFullyQualifiedUri(post.photo)}
@@ -81,15 +81,15 @@ export function FeedPostItem(props: Props) {
         </Pressable>
       </XStack>
       <YStack px={16} space={12}>
-        <Text fontWeight="600">
+        <Paragraph fontWeight="600">
           {post.likeCount.toLocaleString()}{' '}
           {post.likeCount === 1 ? 'like' : 'likes'}
-        </Text>
-        <Text>{post.caption}</Text>
-        <Text fontWeight="600">
+        </Paragraph>
+        <Paragraph>{post.caption}</Paragraph>
+        <Paragraph fontWeight="600">
           View {post.commentCount.toLocaleString()}{' '}
           {post.commentCount === 1 ? 'comment' : 'comments'}
-        </Text>
+        </Paragraph>
       </YStack>
     </YStack>
   );

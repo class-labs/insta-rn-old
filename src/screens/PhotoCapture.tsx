@@ -5,7 +5,7 @@ import { Camera, CameraType } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
 import { RefreshCcw as IconRefresh } from '@tamagui/lucide-icons';
 import { StatusBar } from 'expo-status-bar';
-import { Button, Text, XStack, YStack } from 'tamagui';
+import { Button, Paragraph, XStack, YStack } from 'tamagui';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../types/Navigation';
@@ -44,7 +44,7 @@ export function PhotoCapture() {
   if (!permission.granted) {
     return (
       <YStack flex={1} backgroundColor="white" p={20} space={12}>
-        <Text>Camera permission needed.</Text>
+        <Paragraph>Camera permission needed.</Paragraph>
         <Button onPress={() => requestPermission()}>Enable Camera</Button>
       </YStack>
     );

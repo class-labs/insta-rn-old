@@ -1,5 +1,5 @@
 import { FlatList, Pressable } from 'react-native';
-import { Text, YStack } from 'tamagui';
+import { Paragraph, YStack } from 'tamagui';
 import { useQuery } from '@apollo/client';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -42,11 +42,11 @@ export function Home() {
   }, [navigation]);
 
   if (error) {
-    return <Text>{String(error)}</Text>;
+    return <Paragraph>{String(error)}</Paragraph>;
   }
 
   if (loading || !data) {
-    return <Text>Loading...</Text>;
+    return <Paragraph>Loading...</Paragraph>;
   }
 
   return (

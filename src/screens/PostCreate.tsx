@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Pressable } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { Button, Image, Spinner, Text, TextArea, YStack } from 'tamagui';
+import { Button, Image, Spinner, Paragraph, TextArea, YStack } from 'tamagui';
 import { useMutation } from '@apollo/client';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/Navigation';
@@ -138,7 +138,7 @@ export function PostCreate() {
                   aspectRatio={1}
                 />
               ) : (
-                <Text>Press to choose an image</Text>
+                <Paragraph>Press to choose an image</Paragraph>
               )}
               {uploadedImage?.state === 'uploading' ? (
                 <YStack
