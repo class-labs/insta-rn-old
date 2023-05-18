@@ -3,10 +3,11 @@ import { Keyboard, KeyboardAvoidingView, Pressable } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Button, Image, Spinner, Text, TextArea, YStack } from 'tamagui';
-import { RootStackParamList } from '../types/Navigation';
 import { useMutation } from '@apollo/client';
-import { CREATE_POST, GET_POSTS } from '../graphql/queries';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/Navigation';
+import { CREATE_POST, GET_POSTS } from '../graphql/queries';
+import { useKeyboardVisibility } from '../support/useKeyboardVisibility';
 
 type ResolvedRouteProp = RouteProp<RootStackParamList, 'PostCreate'>;
 type NavigationProp = NativeStackNavigationProp<
@@ -179,21 +180,4 @@ export function PostCreate() {
       </KeyboardAvoidingView>
     </YStack>
   );
-}
-
-function useKeyboardVisibility() {
-  const [isVisible, setVisible] = useState(false);
-  useEffect(() => {
-    const keyboardDidShow = Keyboard.addListener('keyboardDidShow', () => {
-      setVisible(true);
-    });
-    const keyboardDidHide = Keyboard.addListener('keyboardDidHide', () => {
-      setVisible(false);
-    });
-    return () => {
-      keyboardDidShow.remove();
-      keyboardDidHide.remove();
-    };
-  }, []);
-  return isVisible;
 }
