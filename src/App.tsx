@@ -1,6 +1,5 @@
 /* eslint-disable react/style-prop-object */
 import { useFonts } from 'expo-font';
-import { StatusBar } from 'expo-status-bar';
 import { TamaguiProvider } from 'tamagui';
 
 import config from '../tamagui.config';
@@ -19,15 +18,12 @@ export function App() {
   }
 
   return (
-    <>
-      <StatusBar style="auto" />
-      <AuthProvider>
-        <ApolloProvider>
-          <TamaguiProvider config={config}>
-            <Navigation />
-          </TamaguiProvider>
-        </ApolloProvider>
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <ApolloProvider>
+        <TamaguiProvider config={config}>
+          <Navigation />
+        </TamaguiProvider>
+      </ApolloProvider>
+    </AuthProvider>
   );
 }
