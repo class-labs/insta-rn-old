@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Pressable } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, Pressable } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Button, Image, Spinner, Paragraph, TextArea, YStack } from 'tamagui';
@@ -48,6 +48,13 @@ async function uploadImage(
     },
     body: blob,
   });
+  if (!response.ok) {
+    throw new Error(`Unexpected response status: ${response.status}`);
+  }
+  const contentType = response.headers.get('content-type') ?? '';
+  if (contentType.toLowerCase().split(';')[0] !== 'application/json') {
+    throw new Error(`Unexpected response type: ${contentType}`);
+  }
   return await response.json();
 }
 
@@ -69,11 +76,17 @@ export function PostCreate() {
 
   const startUpload = async (uri: string) => {
     setUploadedImage({ state: 'uploading' });
-    const result = await uploadImage(uri);
-    setUploadedImage({
-      state: 'complete',
-      uri: result.url,
-    });
+    uploadImage(uri)
+      .then((result) => {
+        setUploadedImage({
+          state: 'complete',
+          uri: result.url,
+        });
+      })
+      .catch((error) => {
+        Alert.alert(String(error));
+        setUploadedImage(null);
+      });
   };
 
   const openImagePicker = async () => {
