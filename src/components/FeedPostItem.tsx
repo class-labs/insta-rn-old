@@ -6,16 +6,11 @@ import {
 import { Alert, Pressable } from 'react-native';
 import { Avatar, Image, Text, XStack, YStack } from 'tamagui';
 import { GET_POSTS, LIKE_POST } from '../graphql/queries';
+import { toFullyQualifiedUri } from '../support/toFullyQualifiedUri';
 import { useAuth } from '../support/Auth';
 
 import { GetPosts_posts as Post } from '../types/__generated__/GetPosts';
 import { LikePost, LikePostVariables } from '../types/__generated__/LikePost';
-
-const SERVER_BASE_URL = process.env.GRAPHQL_API;
-
-function toFullyQualifiedUri(url: string) {
-  return url.startsWith('/') ? SERVER_BASE_URL + url : url;
-}
 
 type Props = {
   post: Post;
