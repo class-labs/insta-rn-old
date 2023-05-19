@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FeedPostItem } from '../components/FeedPostItem';
-import { GET_POSTS } from '../graphql/queries';
+import { GET_POSTS } from '../queries/GetPosts';
 import { useAuth } from '../support/Auth';
 
 import { RootStackParamList } from '../types/Navigation';

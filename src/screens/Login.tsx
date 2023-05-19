@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import { Button, Input, Spacer, YStack } from 'tamagui';
-import { LOGIN } from '../graphql/queries';
+import { LOGIN } from '../queries/Login';
 import { useAuth } from '../support/Auth';
 import { RootStackParamList } from '../types/Navigation';
 import { Login as LoginMutation, LoginVariables } from '../__generated__/Login';

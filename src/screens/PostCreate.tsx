@@ -6,7 +6,8 @@ import { Button, Image, Spinner, Paragraph, TextArea, YStack } from 'tamagui';
 import { useMutation } from '@apollo/client';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/Navigation';
-import { CREATE_POST, GET_POSTS } from '../graphql/queries';
+import { CREATE_POST } from '../queries/CreatePost';
+import { GET_POSTS } from '../queries/GetPosts';
 import { useKeyboardVisibility } from '../support/useKeyboardVisibility';
 
 type ResolvedRouteProp = RouteProp<RootStackParamList, 'PostCreate'>;

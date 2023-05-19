@@ -5,7 +5,8 @@ import {
 } from '@tamagui/lucide-icons';
 import { Alert, Pressable } from 'react-native';
 import { Avatar, Image, Paragraph, XStack, YStack } from 'tamagui';
-import { GET_POSTS, LIKE_POST } from '../graphql/queries';
+import { GET_POSTS } from '../queries/GetPosts';
+import { LIKE_POST } from '../queries/LikePost';
 import { toFullyQualifiedUri } from '../support/toFullyQualifiedUri';
 import { useAuth } from '../support/Auth';
 import { getInitials } from '../support/getInitials';
