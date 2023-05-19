@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { Alert } from 'react-native';
@@ -10,10 +10,12 @@ import { RootStackParamList } from '../types/Navigation';
 import { Login as LoginMutation, LoginVariables } from '../__generated__/Login';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Login'>;
 
 export function Login() {
   const { setAuthToken } = useAuth();
   const navigation = useNavigation<NavigationProp>();
+  const { params } = useRoute<LoginScreenRouteProp>();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [login] = useMutation<LoginMutation, LoginVariables>(LOGIN, {
@@ -23,7 +25,7 @@ export function Login() {
     onCompleted: (data) => {
       if (data.login) {
         setAuthToken(data.login.token);
-        navigation.replace('Home');
+        navigation.replace(params.next);
       } else {
         Alert.alert('Login Failed', 'Invalid username or password');
       }

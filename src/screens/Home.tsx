@@ -1,20 +1,22 @@
+import { useEffect } from 'react';
 import { FlatList, Pressable } from 'react-native';
 import { Paragraph, YStack } from 'tamagui';
+import { Plus as IconPlus } from '@tamagui/lucide-icons';
 import { useQuery } from '@apollo/client';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-import { GetPosts } from '../__generated__/GetPosts';
-import { GET_POSTS } from '../graphql/queries';
 import { FeedPostItem } from '../components/FeedPostItem';
+import { GET_POSTS } from '../graphql/queries';
+import { useAuth } from '../support/Auth';
+
 import { RootStackParamList } from '../types/Navigation';
-import { Plus as IconPlus } from '@tamagui/lucide-icons';
-import { useEffect } from 'react';
+import { GetPosts } from '../__generated__/GetPosts';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 export function Home() {
+  const { getAuthToken } = useAuth();
   const navigation = useNavigation<NavigationProp>();
   const { data, loading, error } = useQuery<GetPosts>(GET_POSTS, {
     onError: (error) => {
@@ -31,7 +33,12 @@ export function Home() {
           <Pressable
             style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
             onPress={() => {
-              navigation.navigate('PhotoCapture');
+              const isLoggedIn = getAuthToken() !== null;
+              if (isLoggedIn) {
+                navigation.navigate('PhotoCapture');
+              } else {
+                navigation.navigate('Login', { next: 'PhotoCapture' });
+              }
             }}
           >
             <IconPlus />
@@ -39,7 +46,7 @@ export function Home() {
         );
       },
     });
-  }, [navigation]);
+  }, [navigation, getAuthToken]);
 
   if (error) {
     return <Paragraph>{String(error)}</Paragraph>;
@@ -66,7 +73,7 @@ export function Home() {
           <FeedPostItem
             post={item}
             onLoginRequired={() => {
-              navigation.navigate('Login');
+              navigation.navigate('Login', { next: 'Home' });
             }}
           />
         );
