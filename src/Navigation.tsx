@@ -1,12 +1,12 @@
 /* eslint-disable react/style-prop-object */
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Home } from './screens/Home';
-import { Login } from './screens/Login';
-import { PhotoCapture } from './screens/PhotoCapture';
-import { PostCreate } from './screens/PostCreate';
-import { RootStackParamList } from './types/Navigation';
+import { Home } from "./screens/Home";
+import { Login } from "./screens/Login";
+import { PhotoCapture } from "./screens/PhotoCapture";
+import { PostCreate } from "./screens/PostCreate";
+import { RootStackParamList } from "./types/Navigation";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -19,9 +19,9 @@ export function Navigation() {
           name="PhotoCapture"
           component={PhotoCapture}
           options={{
-            title: 'Take Photo',
-            headerStyle: { backgroundColor: 'black' },
-            headerTintColor: 'white',
+            title: "Take Photo",
+            headerStyle: { backgroundColor: "black" },
+            headerTintColor: "white",
             headerBackTitleVisible: false,
           }}
         />
@@ -29,7 +29,7 @@ export function Navigation() {
           name="PostCreate"
           component={PostCreate}
           options={{
-            title: 'New Post',
+            title: "New Post",
             headerBackTitleVisible: false,
           }}
         />

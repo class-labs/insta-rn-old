@@ -1,18 +1,18 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Heart as IconHeart,
   MessageSquare as IconMessageSquare,
-} from '@tamagui/lucide-icons';
-import { Alert, Pressable } from 'react-native';
-import { Avatar, Image, Paragraph, XStack, YStack } from 'tamagui';
-import { GET_POSTS } from '../queries/GetPosts';
-import { LIKE_POST } from '../queries/LikePost';
-import { toFullyQualifiedUri } from '../support/toFullyQualifiedUri';
-import { useAuth } from '../support/Auth';
-import { getInitials } from '../support/getInitials';
+} from "@tamagui/lucide-icons";
+import { Alert, Pressable } from "react-native";
+import { Avatar, Image, Paragraph, XStack, YStack } from "tamagui";
+import { GET_POSTS } from "../queries/GetPosts";
+import { LIKE_POST } from "../queries/LikePost";
+import { toFullyQualifiedUri } from "../support/toFullyQualifiedUri";
+import { useAuth } from "../support/Auth";
+import { getInitials } from "../support/getInitials";
 
-import { GetPosts_posts as Post } from '../__generated__/GetPosts';
-import { LikePost, LikePostVariables } from '../__generated__/LikePost';
+import { GetPosts_posts as Post } from "../__generated__/GetPosts";
+import { LikePost, LikePostVariables } from "../__generated__/LikePost";
 
 type Props = {
   post: Post;
@@ -52,15 +52,15 @@ export function FeedPostItem(props: Props) {
             const authToken = getAuthToken();
             if (authToken === null) {
               Alert.alert(
-                'Login Required',
-                'You must be logged in to like a post.',
+                "Login Required",
+                "You must be logged in to like a post.",
                 [
                   {
-                    text: 'Cancel',
-                    style: 'cancel',
+                    text: "Cancel",
+                    style: "cancel",
                   },
                   {
-                    text: 'Login',
+                    text: "Login",
                     onPress: () => props.onLoginRequired(),
                   },
                 ],
@@ -70,7 +70,7 @@ export function FeedPostItem(props: Props) {
             }
           }}
         >
-          <IconHeart color={post.isLikedByViewer ? '#f7444e' : 'black'} />
+          <IconHeart color={post.isLikedByViewer ? "#f7444e" : "black"} />
         </Pressable>
         <Pressable
           style={({ pressed }) => (pressed ? { opacity: 0.5 } : undefined)}
@@ -83,13 +83,13 @@ export function FeedPostItem(props: Props) {
       </XStack>
       <YStack px={16} space={12}>
         <Paragraph fontWeight="600">
-          {post.likeCount.toLocaleString()}{' '}
-          {post.likeCount === 1 ? 'like' : 'likes'}
+          {post.likeCount.toLocaleString()}{" "}
+          {post.likeCount === 1 ? "like" : "likes"}
         </Paragraph>
         <Paragraph>{post.caption}</Paragraph>
         <Paragraph fontWeight="600">
-          View {post.commentCount.toLocaleString()}{' '}
-          {post.commentCount === 1 ? 'comment' : 'comments'}
+          View {post.commentCount.toLocaleString()}{" "}
+          {post.commentCount === 1 ? "comment" : "comments"}
         </Paragraph>
       </YStack>
     </YStack>

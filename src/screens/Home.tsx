@@ -1,26 +1,26 @@
-import { useEffect } from 'react';
-import { FlatList, Pressable } from 'react-native';
-import { Paragraph, YStack } from 'tamagui';
-import { Plus as IconPlus } from '@tamagui/lucide-icons';
-import { useQuery } from '@apollo/client';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FeedPostItem } from '../components/FeedPostItem';
-import { GET_POSTS } from '../queries/GetPosts';
-import { useAuth } from '../support/Auth';
+import { useEffect } from "react";
+import { FlatList, Pressable } from "react-native";
+import { Paragraph, YStack } from "tamagui";
+import { Plus as IconPlus } from "@tamagui/lucide-icons";
+import { useQuery } from "@apollo/client";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { FeedPostItem } from "../components/FeedPostItem";
+import { GET_POSTS } from "../queries/GetPosts";
+import { useAuth } from "../support/Auth";
 
-import { RootStackParamList } from '../types/Navigation';
-import { GetPosts } from '../__generated__/GetPosts';
+import { RootStackParamList } from "../types/Navigation";
+import { GetPosts } from "../__generated__/GetPosts";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Home">;
 
 export function Home() {
   const { getAuthToken } = useAuth();
   const navigation = useNavigation<NavigationProp>();
   const { data, loading, error } = useQuery<GetPosts>(GET_POSTS, {
     onError: (error) => {
-      console.log('Error fetching data');
+      console.log("Error fetching data");
       console.error(error);
     },
   });
@@ -35,9 +35,9 @@ export function Home() {
             onPress={() => {
               const isLoggedIn = getAuthToken() !== null;
               if (isLoggedIn) {
-                navigation.navigate('PhotoCapture');
+                navigation.navigate("PhotoCapture");
               } else {
-                navigation.navigate('Login', { next: 'PhotoCapture' });
+                navigation.navigate("Login", { next: "PhotoCapture" });
               }
             }}
           >
@@ -60,7 +60,7 @@ export function Home() {
     <FlatList
       data={data.posts}
       style={{
-        backgroundColor: 'white',
+        backgroundColor: "white",
       }}
       contentContainerStyle={{
         paddingTop: 12,
@@ -73,7 +73,7 @@ export function Home() {
           <FeedPostItem
             post={item}
             onLoginRequired={() => {
-              navigation.navigate('Login', { next: 'Home' });
+              navigation.navigate("Login", { next: "Home" });
             }}
           />
         );

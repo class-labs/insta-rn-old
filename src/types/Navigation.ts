@@ -11,5 +11,5 @@ export type RootStackParamList = {
     openPicker?: boolean;
     capturedPhoto?: CameraCapturedPhoto;
   };
-  Login: { next: 'Home' | 'PhotoCapture' };
+  Login: { next: "Home" | "PhotoCapture" };
 };

@@ -1,13 +1,13 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState } from "react";
 import {
   ApolloClient,
   ApolloProvider as Provider,
   createHttpLink,
   InMemoryCache,
-} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
-import { useAuth } from './support/Auth';
+import { useAuth } from "./support/Auth";
 
 type Props = {
   children: ReactNode;

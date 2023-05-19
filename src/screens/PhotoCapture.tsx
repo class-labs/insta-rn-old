@@ -1,17 +1,17 @@
 /* eslint-disable react/style-prop-object */
-import { useEffect, useRef, useState } from 'react';
-import { Alert, Pressable } from 'react-native';
-import { Camera, CameraType } from 'expo-camera';
-import { useNavigation } from '@react-navigation/native';
-import { RefreshCcw as IconRefresh } from '@tamagui/lucide-icons';
-import { StatusBar } from 'expo-status-bar';
-import { Button, Paragraph, XStack, YStack } from 'tamagui';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useEffect, useRef, useState } from "react";
+import { Alert, Pressable } from "react-native";
+import { Camera, CameraType } from "expo-camera";
+import { useNavigation } from "@react-navigation/native";
+import { RefreshCcw as IconRefresh } from "@tamagui/lucide-icons";
+import { StatusBar } from "expo-status-bar";
+import { Button, Paragraph, XStack, YStack } from "tamagui";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import { RootStackParamList } from '../types/Navigation';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { RootStackParamList } from "../types/Navigation";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Home">;
 
 export function PhotoCapture() {
   const insets = useSafeAreaInsets();
@@ -61,18 +61,18 @@ export function PhotoCapture() {
         <Camera
           ref={cameraRef}
           type={type}
-          style={{ width: '100%', aspectRatio: 1 }}
+          style={{ width: "100%", aspectRatio: 1 }}
           onMountError={(error) => {
             const message: unknown = Object(error).message;
             Alert.alert(
-              'Error',
-              typeof message === 'string'
+              "Error",
+              typeof message === "string"
                 ? message
-                : 'Unable to initialize camera',
+                : "Unable to initialize camera",
               [
                 {
-                  text: 'OK',
-                  onPress: () => navigation.replace('PostCreate', {}),
+                  text: "OK",
+                  onPress: () => navigation.replace("PostCreate", {}),
                 },
               ],
             );
@@ -87,7 +87,7 @@ export function PhotoCapture() {
             onPress={async () => {
               const result = await cameraRef.current?.takePictureAsync();
               if (result) {
-                navigation.replace('PostCreate', { capturedPhoto: result });
+                navigation.replace("PostCreate", { capturedPhoto: result });
               }
             }}
           >
@@ -97,7 +97,7 @@ export function PhotoCapture() {
         <XStack justifyContent="center">
           <Button
             onPress={() => {
-              navigation.replace('PostCreate', { openPicker: true });
+              navigation.replace("PostCreate", { openPicker: true });
             }}
           >
             Choose from Photos

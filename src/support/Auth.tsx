@@ -1,7 +1,7 @@
-import { ReactNode, useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ReactNode, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const STORAGE_KEY = '@auth-token';
+const STORAGE_KEY = "@auth-token";
 
 let authToken: string | null = null;
 

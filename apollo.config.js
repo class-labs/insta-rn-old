@@ -1,10 +1,10 @@
-require('dotenv').config();
+require("dotenv").config();
 
 module.exports = {
   client: {
     service: {
-      name: 'api',
-      url: process.env.GRAPHQL_API ?? '',
+      name: "api",
+      url: process.env.GRAPHQL_API ?? "",
     },
   },
 };

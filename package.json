@@ -11,7 +11,9 @@
     "clean": "rm -rf src/__generated__",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 .",
-    "test": "npm run typecheck && npm run lint"
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "test": "npm run typecheck && npm run lint && npm run format:check"
   },
   "dependencies": {
     "@apollo/client": "^3.7.4",
@@ -51,9 +53,7 @@
     "extends": "react-app"
   },
   "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all",
-    "arrowParens": "always"
+    "trailingComma": "all"
   },
   "private": true
 }

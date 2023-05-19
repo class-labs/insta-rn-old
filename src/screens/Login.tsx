@@ -1,33 +1,33 @@
-import { useMutation } from '@apollo/client';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useState } from 'react';
-import { Alert } from 'react-native';
-import { Button, Input, Spacer, YStack } from 'tamagui';
-import { LOGIN } from '../queries/Login';
-import { useAuth } from '../support/Auth';
-import { RootStackParamList } from '../types/Navigation';
-import { Login as LoginMutation, LoginVariables } from '../__generated__/Login';
+import { useMutation } from "@apollo/client";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useState } from "react";
+import { Alert } from "react-native";
+import { Button, Input, Spacer, YStack } from "tamagui";
+import { LOGIN } from "../queries/Login";
+import { useAuth } from "../support/Auth";
+import { RootStackParamList } from "../types/Navigation";
+import { Login as LoginMutation, LoginVariables } from "../__generated__/Login";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
-type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Login'>;
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Login">;
+type LoginScreenRouteProp = RouteProp<RootStackParamList, "Login">;
 
 export function Login() {
   const { setAuthToken } = useAuth();
   const navigation = useNavigation<NavigationProp>();
   const { params } = useRoute<LoginScreenRouteProp>();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [login] = useMutation<LoginMutation, LoginVariables>(LOGIN, {
     onError: () => {
-      Alert.alert('Error', 'Network request failed. Please try again later.');
+      Alert.alert("Error", "Network request failed. Please try again later.");
     },
     onCompleted: (data) => {
       if (data.login) {
         setAuthToken(data.login.token);
         navigation.replace(params.next);
       } else {
-        Alert.alert('Login Failed', 'Invalid username or password');
+        Alert.alert("Login Failed", "Invalid username or password");
       }
     },
   });

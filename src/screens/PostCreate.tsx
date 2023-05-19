@@ -1,29 +1,29 @@
-import { useEffect, useState } from 'react';
-import { Alert, Keyboard, KeyboardAvoidingView, Pressable } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { Button, Image, Spinner, Paragraph, TextArea, YStack } from 'tamagui';
-import { useMutation } from '@apollo/client';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/Navigation';
-import { CREATE_POST } from '../queries/CreatePost';
-import { GET_POSTS } from '../queries/GetPosts';
-import { useKeyboardVisibility } from '../support/useKeyboardVisibility';
+import { useEffect, useState } from "react";
+import { Alert, Keyboard, KeyboardAvoidingView, Pressable } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { Button, Image, Spinner, Paragraph, TextArea, YStack } from "tamagui";
+import { useMutation } from "@apollo/client";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../types/Navigation";
+import { CREATE_POST } from "../queries/CreatePost";
+import { GET_POSTS } from "../queries/GetPosts";
+import { useKeyboardVisibility } from "../support/useKeyboardVisibility";
 
-type ResolvedRouteProp = RouteProp<RootStackParamList, 'PostCreate'>;
+type ResolvedRouteProp = RouteProp<RootStackParamList, "PostCreate">;
 type NavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'PostCreate'
+  "PostCreate"
 >;
 
 const SERVER_BASE_URL = process.env.GRAPHQL_API;
 
 type ImageUpload =
   | {
-      state: 'uploading';
+      state: "uploading";
     }
   | {
-      state: 'complete';
+      state: "complete";
       uri: string;
     };
 
@@ -38,22 +38,22 @@ async function uriToBlob(imageUri: string) {
 
 async function uploadImage(
   imageUri: string,
-  mimeType = 'image/jpeg',
+  mimeType = "image/jpeg",
 ): Promise<UploadResponse> {
   const blob = await uriToBlob(imageUri);
-  const response = await fetch(SERVER_BASE_URL + '/images', {
-    method: 'POST',
+  const response = await fetch(SERVER_BASE_URL + "/images", {
+    method: "POST",
     headers: {
-      'content-type': 'application/octet-stream',
-      'content-disposition': mimeType,
+      "content-type": "application/octet-stream",
+      "content-disposition": mimeType,
     },
     body: blob,
   });
   if (!response.ok) {
     throw new Error(`Unexpected response status: ${response.status}`);
   }
-  const contentType = response.headers.get('content-type') ?? '';
-  if (contentType.toLowerCase().split(';')[0] !== 'application/json') {
+  const contentType = response.headers.get("content-type") ?? "";
+  if (contentType.toLowerCase().split(";")[0] !== "application/json") {
     throw new Error(`Unexpected response type: ${contentType}`);
   }
   return await response.json();
@@ -64,7 +64,7 @@ export function PostCreate() {
   const navigation = useNavigation<NavigationProp>();
   const [createPost] = useMutation(CREATE_POST, {
     onCompleted: () => {
-      navigation.replace('Home');
+      navigation.replace("Home");
     },
     refetchQueries: [GET_POSTS],
   });
@@ -73,14 +73,14 @@ export function PostCreate() {
     return route.params.capturedPhoto?.uri ?? null;
   });
   const [uploadedImage, setUploadedImage] = useState<ImageUpload | null>(null);
-  const [caption, setCaption] = useState('');
+  const [caption, setCaption] = useState("");
 
   const startUpload = async (uri: string) => {
-    setUploadedImage({ state: 'uploading' });
+    setUploadedImage({ state: "uploading" });
     uploadImage(uri)
       .then((result) => {
         setUploadedImage({
-          state: 'complete',
+          state: "complete",
           uri: result.url,
         });
       })
@@ -121,7 +121,7 @@ export function PostCreate() {
   return (
     <YStack flex={1}>
       <KeyboardAvoidingView
-        style={{ height: '100%' }}
+        style={{ height: "100%" }}
         contentContainerStyle={{ flexGrow: 1 }}
         behavior="position"
       >
@@ -154,7 +154,7 @@ export function PostCreate() {
               ) : (
                 <Paragraph>Press to choose an image</Paragraph>
               )}
-              {uploadedImage?.state === 'uploading' ? (
+              {uploadedImage?.state === "uploading" ? (
                 <YStack
                   position="absolute"
                   right={10}
@@ -175,9 +175,9 @@ export function PostCreate() {
               onChangeText={(value) => setCaption(value)}
             />
             <Button
-              disabled={uploadedImage?.state !== 'complete'}
+              disabled={uploadedImage?.state !== "complete"}
               onPress={() => {
-                if (uploadedImage?.state === 'complete') {
+                if (uploadedImage?.state === "complete") {
                   createPost({
                     variables: {
                       photo: uploadedImage.uri,
